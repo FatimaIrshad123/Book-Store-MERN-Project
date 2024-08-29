@@ -40,11 +40,43 @@ app.post('/book', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 app.get('/books', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const books = yield Book.find({});
-        return res.send(books)
+        return res.status(200).json({
+            count: books.length,
+            data: books
+        });
     }
     catch (error) {
-        //console.log(error);
-        res.status(500).send({ message: error.message });
+        console.log(error);
+        return res.status(500).send({ message: error.message });
+    }
+}));
+app.get('/books/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const book = yield Book.findById(id);
+        return res.status(200).json(book);
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).send({ message: error.message });
+    }
+}));
+app.put('/book/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.body.title || !req.body.author || !req.body.publishYear) {
+            return res.status(400).send({
+                message: 'Send all required fields: title, author, publishYear'
+            });
+        }
+        const { id } = req.params;
+        const result = yield Book.findByIdAndUpdate(id, req.body);
+        if (!result) {
+            return res.status(404).json({ message: 'Book not found' });
+        }
+        return res.status(200).send({ message: 'Book updated successfully' });
+    }
+    catch (error) {
+        return res.status(500).send({ message: error.message });
     }
 }));
 mongoose.connect(mongodbURL).then(() => {
