@@ -37,6 +37,16 @@ app.post('/book', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).send({ message: error.message });
     }
 }));
+app.get('/books', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const books = yield Book.find({});
+        return res.send(books)
+    }
+    catch (error) {
+        //console.log(error);
+        res.status(500).send({ message: error.message });
+    }
+}));
 mongoose.connect(mongodbURL).then(() => {
     console.log("App connected to database");
     app.listen(PORT, () => {
