@@ -16,7 +16,7 @@ router.post('/', async(req,res) => {
             publishYear: req.body.publishYear
         };
         const book = await Book.create(newBook)
-        return res.status(400).send(book)
+        return res.status(200).send(book)
 
     }catch(error: any){
         console.log('Port error', error)
