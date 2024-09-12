@@ -42,7 +42,7 @@ const Home = () => {
         </Link>
       </div>
       {loading ? <Spinner />
-      : showType === 'table' ? <BookTable books={books}/> : <BooksCard/>}
+      : showType === 'table' ? <BookTable books={books}/> : <BooksCard books={books}/>}
     </div>
   )
 }
